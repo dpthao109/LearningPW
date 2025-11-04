@@ -6,6 +6,16 @@ export class ShopPage {
     .filter({ hasText: "Add to Cart" })
     .first();
 
+  reviewTab: Locator = this.page
+    .getByRole("link")
+    .filter({ hasText: "REVIEWS" });
+
+    reviewText : Locator = this.page.getByRole("textbox", {name : "Your review *"} );
+
+    submitButton : Locator = this.page.getByRole("button", {name : "Submit"});
+
+    
+
   constructor(private page: Page) {}
 
   async addItems(itemName: string, quantity: number) {
@@ -71,5 +81,28 @@ export class ShopPage {
     });
     const sortedPrices = [...priceValues].sort((a, b) => a - b);
     expect(priceValues).toEqual(sortedPrices);
+  }
+
+  async openItem(itemName: string) {
+    const itemCard = this.page.getByRole("link", {
+      name: itemName,
+      exact: true,
+    });
+    await itemCard.click();
+  }
+
+  async selectTab(tabItem: string) {
+    if ((tabItem = "Review")) {
+      await this.reviewTab.click();
+
+    }
+  }
+
+  async submitReview(reviewContent: string, ratingStar: number ) {
+    const starClass = ".start-" + ratingStar;
+    await this.reviewText.fill(reviewContent);
+    await this.page.locator(starClass).click();
+    await this.submitButton.click();
+
   }
 }
