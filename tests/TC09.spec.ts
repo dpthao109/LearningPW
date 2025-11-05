@@ -11,7 +11,6 @@ test.afterEach("clear all cart", async ({ page }) => {
   await cartPage.removeAllCart();
 });
 
-
 test("TC09 - users can update quantity of product in cart", async ({
   page,
   loggedInPage,
@@ -55,4 +54,3 @@ test("TC09 - users can update quantity of product in cart", async ({
   await cartPage.verifyItemInCart(productName, 3);
   await cartPage.verifySubTotal(productName, price * 3);
 });
-
