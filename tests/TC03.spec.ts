@@ -16,11 +16,14 @@ test("TC_03 : users can sort items by price", async ({
 
   const productName = "AirPods";
   const payMent = "Cash on delivery";
-
+  //Go to Shop page
   await homePage.selectMenuItem("Shop");
+  //Select an item and add to cart
   await shopPage.addItems(productName, 1);
   await homePage.gotoCart();
+  //Go to Checkout page
   await cartPage.checkout();
+  //Choose a different payment method (Direct bank transfer, Cash on delivery)
   await checkOutPage.fillShippingDetails({
     firstName: CONFIG.Customer.FIRST_NAME,
     lastName: CONFIG.Customer.LAST_NAME,
@@ -32,8 +35,10 @@ test("TC_03 : users can sort items by price", async ({
     email: CONFIG.Customer.EMAIL,
     payMentMethod: payMent,
   });
-
+  // /Complete the payment process
   await checkOutPage.placeOrder();
+
+  //Verify order confirmation message
   await checkOutPage.verifyOrderDetails({
     itemName: productName,
     name: CONFIG.Customer.FIRST_NAME + " " + CONFIG.Customer.LAST_NAME,

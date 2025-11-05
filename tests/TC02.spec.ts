@@ -11,12 +11,17 @@ test("TC_02 : users can buy multiple item", async ({ page, loggedInPage }) => {
   const cartPage = new CartPage(page);
   const checkOutPage = new CheckOutPage(page);
 
+  //Go to Shop page
   await homePage.selectMenuItem("Shop");
+
+  //Select multiple items and add to cart
   await shopPage.buyMultipleItems([
     { name: "AirPods", quantity: 2 },
     { name: "iPad Air 2", quantity: 3 },
     { name: "Robotic Arm Edge", quantity: 1 },
   ]);
+
+  // Proceed to checkout and confirm order
   await homePage.gotoCart();
   await cartPage.checkout();
   await checkOutPage.fillShippingDetails({
@@ -30,6 +35,7 @@ test("TC_02 : users can buy multiple item", async ({ page, loggedInPage }) => {
     email: CONFIG.Customer.EMAIL,
   });
   await checkOutPage.placeOrder();
+  //Verify order confirmation message
   await checkOutPage.verifyMultipleProductsInOrder([
     { name: "AirPods", quantity: 2 },
     { name: "iPad Air 2", quantity: 3 },

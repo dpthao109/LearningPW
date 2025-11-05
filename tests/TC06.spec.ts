@@ -16,10 +16,16 @@ test("TC06 - users try to buy an item without logging in", async ({ page }) => {
   const payMent = "Check payments";
 
   await Common.navigateToPage(page);
+
+  //Navigate to 'Shop' or 'Products' section
   await homePage.selectMenuItem("Shop");
   await homePage.switchView("List");
+  //Add a product to cart
   await shopPage.addItems(productName, 1);
+  //Click on Cart button
   await homePage.gotoCart();
+
+  //Proceed to complete order
   await cartPage.checkout();
   await checkOutPage.fillShippingDetails({
     firstName: CONFIG.Customer.FIRST_NAME,

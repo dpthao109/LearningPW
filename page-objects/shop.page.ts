@@ -1,4 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
+import { time } from "console";
 
 export class ShopPage {
   addToCartButton: Locator = this.page
@@ -10,11 +11,11 @@ export class ShopPage {
     .getByRole("link")
     .filter({ hasText: "REVIEWS" });
 
-    reviewText : Locator = this.page.getByRole("textbox", {name : "Your review *"} );
+  reviewText: Locator = this.page.getByRole("textbox", {
+    name: "Your review *",
+  });
 
-    submitButton : Locator = this.page.getByRole("button", {name : "Submit"});
-
-    
+  submitButton: Locator = this.page.getByRole("button", { name: "Submit" });
 
   constructor(private page: Page) {}
 
@@ -94,15 +95,27 @@ export class ShopPage {
   async selectTab(tabItem: string) {
     if ((tabItem = "Review")) {
       await this.reviewTab.click();
-
     }
   }
 
-  async submitReview(reviewContent: string, ratingStar: number ) {
-    const starClass = ".start-" + ratingStar;
+  async submitReview(reviewContent: string, ratingStar: number) {
+    const starClass = ".star-" + ratingStar;
     await this.reviewText.fill(reviewContent);
     await this.page.locator(starClass).click();
     await this.submitButton.click();
+    await this.page.waitForTimeout(5000);
+  }
 
+  async verifyReviewPosted(reviewContent: string, ratingStar: number) {
+    this.selectTab("Review");
+    const reviewLocator = this.page
+      .locator(".comment-text")
+      .filter({ hasText: reviewContent });
+
+    await expect(reviewLocator).toBeVisible();
+    const ratingStarLocator = reviewLocator.getByRole("img", {
+      name: `Rated ${ratingStar} out of 5`,
+    });
+    await expect(ratingStarLocator).toBeVisible();
   }
 }

@@ -3,11 +3,6 @@ import { HomePage } from "page-objects/home.page";
 import { ShopPage } from "page-objects/shop.page";
 import { CartPage } from "page-objects/cart.page";
 
-test.afterEach('clear all cart', async () => {
-  // Add cart cleanup logic here if needed
-  
-});
-
 test("TC09 - users can update quantity of product in cart", async ({
   page,
   loggedInPage,
@@ -50,4 +45,10 @@ test("TC09 - users can update quantity of product in cart", async ({
   //Verify quantity of product and SUB TOTAL price : 3 products
   await cartPage.verifyItemInCart(productName, 3);
   await cartPage.verifySubTotal(productName, price * 3);
+});
+
+test.afterEach("clear all cart", async ({ page }) => {
+  // Clear the cart after each test
+  const cartPage = new CartPage(page);
+  await cartPage.removeAllCart();
 });

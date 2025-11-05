@@ -12,7 +12,7 @@ export class MyAccountPage {
     await this.recentOrdersLink.click();
   }
 
-  async verifyOrderS(expectedCount: number) {
+  async verifyOrders(expectedCount: number) {
     const orderRows = this.orderTable.locator("tbody tr");
     const actualCount = await orderRows.count();
     await expect(actualCount).toBeGreaterThanOrEqual(expectedCount);

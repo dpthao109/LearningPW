@@ -1,11 +1,10 @@
 import { expect, Locator, Page } from "@playwright/test";
 
-
 export class CartPage {
   checkoutButton: Locator = this.page.getByRole("link", {
     name: "PROCEED TO CHECKOUT",
   });
-  removeLink : Locator = this.page.getByRole('link', {name : "Remove"});
+  removeLink: Locator = this.page.getByRole("link", { name: "Remove" });
 
   constructor(private page: Page) {}
 
@@ -33,16 +32,13 @@ export class CartPage {
     await removeButton.click();
   }
 
-  async removeAllCart()
-  {
+  async removeAllCart() {
     const removeLinkCount = this.removeLink.count();
-    for(let i =1 ; i < await removeLinkCount; i++)
-    {
+    for (let i = 1; i <= (await removeLinkCount); i++) {
       this.removeLink.first().click();
       await this.page.waitForTimeout(5000);
     }
-
-    }
+  }
 
   async verifyCartIsEmpty() {
     await expect(
@@ -58,7 +54,7 @@ export class CartPage {
     await quantityLocator.fill(quantity.toString());
     // Click outside to trigger update
     await this.page.click("body");
-    await this.page.waitForTimeout(3000)
+    await this.page.waitForTimeout(3000);
   }
 
   async getItemQuantity(itemName: string): Promise<number> {
@@ -88,7 +84,7 @@ export class CartPage {
         .getByRole("row")
         .filter({ hasText: itemName })
         .locator(".minus")
-        .click({timeout:5000});
+        .click({ timeout: 5000 });
     }
   }
 
@@ -109,9 +105,6 @@ export class CartPage {
 
   async verifySubTotal(itemName: string, expectedTotal: number) {
     const subTotal = await this.getSubTotalNumber(itemName);
-    expect(subTotal).toEqual(expectedTotal);
+    await expect(subTotal).toEqual(expectedTotal);
   }
-
-  
-  
 }
