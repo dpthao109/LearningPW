@@ -1,5 +1,4 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { time } from "console";
 
 export class ShopPage {
   addToCartButton: Locator = this.page
@@ -103,7 +102,6 @@ export class ShopPage {
     await this.reviewText.fill(reviewContent);
     await this.page.locator(starClass).click();
     await this.submitButton.click();
-    await this.page.waitForTimeout(5000);
   }
 
   async verifyReviewPosted(reviewContent: string, ratingStar: number) {

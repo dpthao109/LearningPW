@@ -25,7 +25,8 @@ export class CheckOutPage {
   emailInput: Locator = this.page.getByRole("textbox", {
     name: "Email address *",
   });
-  orderConfirmation: Locator = this.page.locator('.woocommerce-thankyou-order-received'
+  orderConfirmation: Locator = this.page.locator(
+    ".woocommerce-thankyou-order-received"
   );
   billingAddressSection: Locator = this.page.locator(
     "woocommerce-customer-details"
@@ -59,6 +60,7 @@ export class CheckOutPage {
 
   async placeOrder() {
     await this.placeOrderButton.click();
+    await this.page.waitForLoadState();
   }
 
   async verifyOrderDetails(orderDetails: {
@@ -71,8 +73,7 @@ export class CheckOutPage {
     email: string;
     payMentMethod?: string;
   }) {
-    await this.page.waitForTimeout(2000);
-    await expect(this.orderConfirmation).toBeVisible();
+    await expect(this.orderConfirmation).toBeVisible({timeout:7000});
     await expect(
       this.page.getByRole("link", { name: orderDetails.itemName })
     ).toBeVisible();
@@ -119,7 +120,6 @@ export class CheckOutPage {
   }
 
   async verifyErrorMessage(expectedMessage: string) {
-    //await expect(this.getErrorMessages()).toContainEqual(expectedMessage);
     await expect(
       this.page.getByRole("alert").locator("li", { hasText: expectedMessage })
     ).toBeVisible();

@@ -5,9 +5,17 @@ import { CartPage } from "page-objects/cart.page";
 import { CheckOutPage } from "page-objects/checkOut.page";
 import { ShopPage } from "page-objects/shop.page";
 
+test.beforeEach("clear all cart", async ({ page, loggedInPage }) => {
+  // Clear the cart after each test
+  const cartPage = new CartPage(page);
+  const homePage = new HomePage(page);
+
+  await homePage.gotoCart();
+  await cartPage.removeAllCart();
+});
+
 test("TC_03 : users can sort items by price", async ({
   page,
-  loggedInPage,
 }) => {
   const homePage = new HomePage(page);
   const shopPage = new ShopPage(page);

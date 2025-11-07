@@ -3,17 +3,18 @@ import { HomePage } from "page-objects/home.page";
 import { ShopPage } from "page-objects/shop.page";
 import { CartPage } from "page-objects/cart.page";
 
-//test.use({ viewport: null,});
 
-test.afterEach("clear all cart", async ({ page }) => {
+test.beforeEach("clear all cart", async ({ page, loggedInPage }) => {
   // Clear the cart after each test
   const cartPage = new CartPage(page);
+  const homePage = new HomePage(page);
+
+  await homePage.gotoCart();
   await cartPage.removeAllCart();
 });
 
 test("TC09 - users can update quantity of product in cart", async ({
   page,
-  loggedInPage,
 }) => {
   const homePage = new HomePage(page);
   const shopPage = new ShopPage(page);
@@ -31,7 +32,7 @@ test("TC09 - users can update quantity of product in cart", async ({
 
   //Verify quantity of added product
   await cartPage.verifyItemInCart(productName, productQuantity);
-  const price = await cartPage.getSubTotalNumber(productName);
+  const price = await cartPage.getPrice(productName);
 
   //Click on Plus(+) button
   await cartPage.addItemQuantity(productName, 1);
@@ -51,6 +52,6 @@ test("TC09 - users can update quantity of product in cart", async ({
   await cartPage.subtractItemQuantity(productName, 1);
 
   //Verify quantity of product and SUB TOTAL price : 3 products
-  await cartPage.verifyItemInCart(productName, 3);
   await cartPage.verifySubTotal(productName, price * 3);
+  await cartPage.verifyItemInCart(productName, 3);
 });

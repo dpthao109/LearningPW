@@ -7,7 +7,11 @@ test.beforeEach("add items to cart", async ({ page, loggedInPage }) => {
   //User added the items into cart
   const homePage = new HomePage(page);
   const shopPage = new ShopPage(page);
+  const cartPage = new CartPage(page);
   const productName = "AirPods";
+
+  await homePage.gotoCart();
+  await cartPage.removeAllCart();
 
   await homePage.selectMenuItem("Shop");
   await homePage.switchView("List");

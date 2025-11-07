@@ -51,8 +51,9 @@ export class HomePage {
   }
 
   async gotoCart() {
-    await this.page.waitForTimeout(2000);
     await this.cartLink.click();
+    await this.page.reload();
+
   }
 
   async gotoAccount() {
