@@ -85,14 +85,15 @@ export class CartPage {
     const priceText = await this.rowItemLocator(itemName)
       .locator(".product-price")
       .textContent();
-    return parseFloat(priceText.replace(/[^\d.-]/g, ""));
+    //return parseFloat(priceText.replace(/[^\d.-]/g, ""));
+    return parseFloat((priceText ?? "").replace(/[^\d.-]/g, ""));
   }
 
   async getSubTotalNumber(itemName: string): Promise<number> {
     const subTotalText = await this.rowItemLocator(itemName)
       .locator(".product-subtotal")
       .textContent();
-    const subTotal = subTotalText.replace(/[^\d.-]/g, "");
+    const subTotal = (subTotalText ?? "").replace(/[^\d.-]/g, "");
     return parseFloat(subTotal);
   }
 

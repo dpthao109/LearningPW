@@ -1,12 +1,6 @@
 export const CONFIG = {
   Url: "https://demo.testarchitect.com/",
-  Account: "thao.phuong.do",
 
-  CREDENTIALS: {
-    USERNAME: "thao.phuong.do@agest.vn",  
-    PASSWORD: "Testarchitect",  
-  },
-  
   Customer: {
     FIRST_NAME: "Thao",
     LAST_NAME: "Do",

@@ -1,12 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
+import * as dotenv from 'dotenv';
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+dotenv.config();
+
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -28,6 +24,11 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
+    // NOTE: Playwright's `use` options only accept known TestOptions; do not put custom properties here.
+    // Access credentials from process.env directly in your tests or expose them via fixtures:
+    // const username = process.env.USERNAME;
+    // const password = process.env.PASSWORD;
+    // const account = process.env.ACCOUNT;
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on',

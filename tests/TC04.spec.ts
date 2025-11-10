@@ -24,3 +24,4 @@ test("TC04 - users can sort items by price", async ({ page, loggedInPage }) => {
   //Verify the order of items
   await shopPage.verifyItemsSortedByPriceAscending();
 });
+
