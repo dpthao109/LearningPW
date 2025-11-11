@@ -10,7 +10,7 @@ export class HomePage {
     .filter({ hasText: "$" })
     .getByRole("img")
     .first();
-  accountLink: Locator = this.page.getByRole("link", { name: CONFIG.Account });
+  accountLink: Locator = this.page.getByRole("link", { name: process.env.TEST_ACCOUNT! });
 
   constructor(private page: Page) {}
 

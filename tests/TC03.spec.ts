@@ -14,7 +14,7 @@ test.beforeEach("clear all cart", async ({ page, loggedInPage }) => {
   await cartPage.removeAllCart();
 });
 
-test("TC_03 : users can sort items by price", async ({
+test("TC_03 :  users can buy an item using different payment methods", async ({
   page,
 }) => {
   const homePage = new HomePage(page);

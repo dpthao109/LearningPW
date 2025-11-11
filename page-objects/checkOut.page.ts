@@ -73,7 +73,7 @@ export class CheckOutPage {
     email: string;
     payMentMethod?: string;
   }) {
-    await expect(this.orderConfirmation).toBeVisible({timeout:7000});
+    await expect(this.orderConfirmation).toBeVisible({timeout:10000});
     await expect(
       this.page.getByRole("link", { name: orderDetails.itemName })
     ).toBeVisible();

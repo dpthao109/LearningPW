@@ -23,7 +23,7 @@ test("TC10 - users can post a review", async ({ page, loggedInPage }) => {
 
   //Submit a review
   await shopPage.submitReview(reviewContent, ratingStar);
-
+  await shopPage.selectTab("Review");
   //Verify new review
   await shopPage.verifyReviewPosted(reviewContent, ratingStar);
 });
