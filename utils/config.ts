@@ -9,7 +9,6 @@ export const CONFIG = {
     CITY: "Hanoi",
     ZIP_CODE: "12345",
     PHONE: "01234567890",
-    EMAIL: "thao.phuong.do@agest.vn"
-  }
-  
-};  
+    EMAIL: "thao.phuong.do@agest.vn",
+  },
+};

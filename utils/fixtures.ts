@@ -3,7 +3,6 @@ import { LoginPage } from "page-objects/login.page";
 import { Common } from "utils/common";
 import { HomePage } from "page-objects/home.page";
 
-
 export const test = base.extend<{
   loggedInPage: void;
   homePage: HomePage;
@@ -11,10 +10,7 @@ export const test = base.extend<{
   loggedInPage: async ({ page }, use) => {
     const loginPage = new LoginPage(page);
     await Common.navigateToPage(page);
-    await loginPage.logIn(
-      process.env.TEST_USERNAME!,
-      process.env.TEST_PASSWORD!
-    );
+    await loginPage.logIn(process.env.TEST_USERNAME!, process.env.TEST_PASSWORD!);
     await use();
   },
 
@@ -23,5 +19,3 @@ export const test = base.extend<{
   },
 });
 export { expect } from "@playwright/test";
-
-
