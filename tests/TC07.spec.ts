@@ -20,9 +20,7 @@ test.beforeEach("add item", async ({ page, loggedInPage }) => {
   await cartPage.checkout();
 });
 
-test("TC07 - Ensure proper error handling when mandatory fields are blank", async ({
-  page,
-}) => {
+test("TC07 - Ensure proper error handling when mandatory fields are blank", async ({ page }) => {
   const checkOutPage = new CheckOutPage(page);
 
   //Leave mandatory fields (address, payment info) blank
@@ -41,10 +39,6 @@ test("TC07 - Ensure proper error handling when mandatory fields are blank", asyn
   await checkOutPage.placeOrder();
 
   //Verify error messages
-  await checkOutPage.verifyErrorMessage(
-    "Billing Street address is a required field."
-  );
-  await checkOutPage.verifyErrorMessage(
-    "Billing Email address is a required field."
-  );
+  await checkOutPage.verifyErrorMessage("Billing Street address is a required field.");
+  await checkOutPage.verifyErrorMessage("Billing Email address is a required field.");
 });

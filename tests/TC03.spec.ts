@@ -14,9 +14,7 @@ test.beforeEach("clear all cart", async ({ page, loggedInPage }) => {
   await cartPage.removeAllCart();
 });
 
-test("TC_03 :  users can buy an item using different payment methods", async ({
-  page,
-}) => {
+test("TC_03 :  users can buy an item using different payment methods", async ({ page }) => {
   const homePage = new HomePage(page);
   const shopPage = new ShopPage(page);
   const cartPage = new CartPage(page);

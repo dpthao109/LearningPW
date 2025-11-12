@@ -2,9 +2,7 @@ import { expect, Locator, Page } from "@playwright/test";
 
 export class MyAccountPage {
   logoutLink: Locator = this.page.getByRole("link", { name: "Log out" });
-  recentOrdersLink: Locator = this.page
-    .getByRole("link")
-    .filter({ hasText: "Recent orders" });
+  recentOrdersLink: Locator = this.page.getByRole("link").filter({ hasText: "Recent orders" });
   orderTable: Locator = this.page.locator("table.shop_table");
 
   constructor(private page: Page) {}

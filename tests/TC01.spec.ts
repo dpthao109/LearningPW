@@ -4,10 +4,7 @@ import { HomePage } from "page-objects/home.page";
 import { CartPage } from "page-objects/cart.page";
 import { CheckOutPage } from "page-objects/checkOut.page";
 
-test("TC_01 : users can buy an item successfully", async ({
-  page,
-  loggedInPage,
-}) => {
+test("TC_01 : users can buy an item successfully", async ({ page, loggedInPage }) => {
   const homePage = new HomePage(page);
   const cartPage = new CartPage(page);
   const checkOutPage = new CheckOutPage(page);

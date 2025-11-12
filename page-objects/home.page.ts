@@ -5,11 +5,7 @@ export class HomePage {
   allDepartments: Locator = this.page.getByText("All Departments");
   gridButton: Locator = this.page.locator(".switch-grid");
   listButton: Locator = this.page.locator(".switch-list");
-  cartLink: Locator = this.page
-    .getByRole("link")
-    .filter({ hasText: "$" })
-    .getByRole("img")
-    .first();
+  cartLink: Locator = this.page.getByRole("link").filter({ hasText: "$" }).getByRole("img").first();
   accountLink: Locator = this.page.getByRole("link", { name: process.env.TEST_ACCOUNT! });
 
   constructor(private page: Page) {}
@@ -53,7 +49,6 @@ export class HomePage {
   async gotoCart() {
     await this.cartLink.click();
     await this.page.reload();
-
   }
 
   async gotoAccount() {

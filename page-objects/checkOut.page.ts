@@ -25,12 +25,8 @@ export class CheckOutPage {
   emailInput: Locator = this.page.getByRole("textbox", {
     name: "Email address *",
   });
-  orderConfirmation: Locator = this.page.locator(
-    ".woocommerce-thankyou-order-received"
-  );
-  billingAddressSection: Locator = this.page.locator(
-    "woocommerce-customer-details"
-  );
+  orderConfirmation: Locator = this.page.locator(".woocommerce-thankyou-order-received");
+  billingAddressSection: Locator = this.page.locator("woocommerce-customer-details");
   constructor(private page: Page) {}
 
   async fillShippingDetails(details: {
@@ -52,10 +48,7 @@ export class CheckOutPage {
     await this.zipCodeInput.fill(details.zipCode);
     await this.phoneInput.fill(details.phone);
     await this.emailInput.fill(details.email);
-    if (details.payMentMethod)
-      await this.page
-        .getByRole("radio", { name: details.payMentMethod })
-        .check();
+    if (details.payMentMethod) await this.page.getByRole("radio", { name: details.payMentMethod }).check();
   }
 
   async placeOrder() {
@@ -73,21 +66,15 @@ export class CheckOutPage {
     email: string;
     payMentMethod?: string;
   }) {
-    await expect(this.orderConfirmation).toBeVisible({timeout:10000});
-    await expect(
-      this.page.getByRole("link", { name: orderDetails.itemName })
-    ).toBeVisible();
+    await expect(this.orderConfirmation).toBeVisible({ timeout: 10000 });
+    await expect(this.page.getByRole("link", { name: orderDetails.itemName })).toBeVisible();
     await expect(this.page.getByText(orderDetails.phone)).toBeVisible();
-    await expect(
-      this.page.getByRole("paragraph").filter({ hasText: orderDetails.email })
-    ).toBeVisible();
+    await expect(this.page.getByRole("paragraph").filter({ hasText: orderDetails.email })).toBeVisible();
     await expect(this.page.getByText(orderDetails.name)).toBeVisible();
     await expect(this.page.getByText(orderDetails.street)).toBeVisible();
     await expect(this.page.getByText(orderDetails.city)).toBeVisible();
     if (orderDetails.payMentMethod)
-      await expect(
-        this.page.getByRole("cell", { name: orderDetails.payMentMethod })
-      ).toBeVisible();
+      await expect(this.page.getByRole("cell", { name: orderDetails.payMentMethod })).toBeVisible();
   }
 
   async verifyProductsInOrder(itemName: string, quantity: number) {
@@ -97,9 +84,7 @@ export class CheckOutPage {
     await expect(items).toBeVisible();
   }
 
-  async verifyMultipleProductsInOrder(
-    items: { name: string; quantity: number }[]
-  ) {
+  async verifyMultipleProductsInOrder(items: { name: string; quantity: number }[]) {
     for (const item of items) {
       await this.verifyProductsInOrder(item.name, item.quantity);
     }
@@ -120,8 +105,6 @@ export class CheckOutPage {
   }
 
   async verifyErrorMessage(expectedMessage: string) {
-    await expect(
-      this.page.getByRole("alert").locator("li", { hasText: expectedMessage })
-    ).toBeVisible();
+    await expect(this.page.getByRole("alert").locator("li", { hasText: expectedMessage })).toBeVisible();
   }
 }

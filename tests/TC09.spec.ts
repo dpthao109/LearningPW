@@ -3,7 +3,6 @@ import { HomePage } from "page-objects/home.page";
 import { ShopPage } from "page-objects/shop.page";
 import { CartPage } from "page-objects/cart.page";
 
-
 test.beforeEach("clear all cart", async ({ page, loggedInPage }) => {
   // Clear the cart after each test
   const cartPage = new CartPage(page);
@@ -13,9 +12,7 @@ test.beforeEach("clear all cart", async ({ page, loggedInPage }) => {
   await cartPage.removeAllCart();
 });
 
-test("TC09 - users can update quantity of product in cart", async ({
-  page,
-}) => {
+test("TC09 - users can update quantity of product in cart", async ({ page }) => {
   const homePage = new HomePage(page);
   const shopPage = new ShopPage(page);
   const cartPage = new CartPage(page);
