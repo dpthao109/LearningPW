@@ -1,5 +1,5 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { CONFIG } from "utils/config";
+import { Common } from "utils/common";
 
 export class HomePage {
   allDepartments: Locator = this.page.getByText("All Departments");
@@ -20,25 +20,24 @@ export class HomePage {
     await menu.click();
   }
 
-  async switchView(view: string) {
-    await this.page.waitForTimeout(2000);
-    if (view === "Grid") {
-      await expect(this.gridButton).toBeVisible();
-      await this.gridButton.click();
-    } else if (view === "List") {
-      await expect(this.listButton).toBeVisible();
-      await this.listButton.click();
-    }
+  async switchViewToList() {
+    await expect(this.listButton).toBeVisible();
+    await this.listButton.click();
   }
 
-  async verifyViewIs(view: string) {
-    if (view === "List") {
-      const productsList = this.page.locator(".products-list");
-      await expect(productsList).toBeVisible();
-    } else if (view === "Grid") {
-      const productsGrid = this.page.locator(".products-grid");
-      await expect(productsGrid).toBeVisible();
-    }
+  async switchViewToGrid() {
+    await expect(this.gridButton).toBeVisible();
+    await this.gridButton.click();
+  }
+
+  async verifyViewIsList() {
+    const productsList = this.page.locator(".products-list");
+    await expect(productsList).toBeVisible();
+  }
+
+  async verifyViewIsGrid() {
+    const productsGrid = this.page.locator(".products-grid");
+    await expect(productsGrid).toBeVisible();
   }
 
   async addItemToCart(itemName: string) {
@@ -48,7 +47,7 @@ export class HomePage {
 
   async gotoCart() {
     await this.cartLink.click();
-    await this.page.reload();
+    await expect (this.page.getByRole("link", { name: "SHOPPING CART"})).toBeVisible();
   }
 
   async gotoAccount() {

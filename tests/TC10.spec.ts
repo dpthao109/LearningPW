@@ -1,12 +1,7 @@
-import { expect, test } from "utils/fixtures";
-import { HomePage } from "page-objects/home.page";
-import { ShopPage } from "page-objects/shop.page";
+import { test } from "utils/fixtures";
 import { Common } from "utils/common";
 
-test("TC10 - users can post a review", async ({ page, loggedInPage }) => {
-  const homePage = new HomePage(page);
-  const shopPage = new ShopPage(page);
-
+test("TC10 - users can post a review", async ({ loggedInPage, homePage, shopPage }) => {
   const productName = "AirPods";
   const randomNum = await Common.randomNumber(1, 1000);
   const reviewContent = `test review ${randomNum}`;

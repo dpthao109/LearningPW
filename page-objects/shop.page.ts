@@ -1,17 +1,11 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { log } from "console";
 
 export class ShopPage {
-  addToCartButton: Locator = this.page
-    .getByRole("button")
-    .filter({ hasText: "Add to Cart" })
-    .first();
+  addToCartButton: Locator = this.page.getByRole("button", { name: "Add to cart" });
 
-  reviewTab: Locator = this.page
-    .getByRole("link")
-    .filter({ hasText: "REVIEWS" });
+  reviewTab: Locator = this.page.getByRole("link").filter({ hasText: "REVIEWS" });
 
-  descriptionTab: Locator = this.page.getByRole('link').filter({hasText: "DESCRIPTION"})
+  descriptionTab: Locator = this.page.getByRole("link").filter({ hasText: "DESCRIPTION" });
 
   reviewText: Locator = this.page.getByRole("textbox", {
     name: "Your review *",
@@ -22,9 +16,9 @@ export class ShopPage {
   constructor(private page: Page) {}
 
   async addItems(itemName: string, quantity: number) {
-    const itemCard = this.page.getByRole("link", {
+    const itemCard =  this.page.getByRole("link", {
       name: itemName,
-      exact: true,
+      exact: true
     });
     await itemCard.click();
     if (quantity > 1) {
@@ -33,7 +27,9 @@ export class ShopPage {
       });
       await quantityInput.fill(quantity.toString());
     }
+    await expect(this.addToCartButton).toBeVisible();
     await this.addToCartButton.click();
+    await this.page.waitForLoadState('networkidle');
     await this.page.goBack();
   }
 
@@ -43,17 +39,21 @@ export class ShopPage {
     }
   }
 
+  async waitForLoadingToComplete() {
+    const loadingIndicator = this.page.locator('[class*="product-ajax loading"]');
+    await this.page.waitForLoadState("networkidle");
+    await expect(loadingIndicator).toHaveCount(0);
+  }
+
   async filter(filterBy: string) {
+    await this.page.waitForLoadState("networkidle");
     await this.page.locator('select[name="orderby"]').selectOption(filterBy);
+    await this.waitForLoadingToComplete();
   }
 
   async verifyItemsSortedByPriceDescending() {
-    await this.page.waitForTimeout(5000); // Wait for sorting to take effect
-
-    const prices = await this.page
-      .locator(".product")
-      .locator(".price")
-      .allTextContents();
+    await this.page.waitForLoadState();
+    const prices = await this.page.locator(".product").locator(".price").allTextContents();
     const priceValues = prices.map((priceText) => {
       const match = priceText.match(/[\d,.]+/g);
       if (match) {
@@ -68,11 +68,7 @@ export class ShopPage {
   }
 
   async verifyItemsSortedByPriceAscending() {
-    await this.page.waitForTimeout(5000); // Wait for sorting to take effect
-    const prices = await this.page
-      .locator(".product")
-      .locator(".price")
-      .allTextContents();
+    const prices = await this.page.locator(".product").locator(".price").allTextContents();
     const priceValues = prices.map((priceText) => {
       const match = priceText.match(/[\d,.]+/g);
       if (match) {
@@ -95,10 +91,9 @@ export class ShopPage {
   }
 
   async selectTab(tabItem: string) {
-    if (tabItem = "Review") 
-      {
-        await this.reviewTab.click();
-      }
+    if ((tabItem = "Review")) {
+      await this.reviewTab.click();
+    }
   }
 
   async submitReview(reviewContent: string, ratingStar: number) {
@@ -110,9 +105,7 @@ export class ShopPage {
   }
 
   async verifyReviewPosted(reviewContent: string, ratingStar: number) {
-    const reviewLocator = this.page
-      .locator(".comment-text")
-      .filter({ hasText: reviewContent });
+    const reviewLocator = this.page.locator(".comment-text").filter({ hasText: reviewContent });
     await expect(reviewLocator).toBeVisible();
     const ratingStarLocator = reviewLocator.getByRole("img", {
       name: `Rated ${ratingStar} out of 5`,

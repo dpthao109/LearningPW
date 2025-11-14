@@ -1,15 +1,7 @@
 import { CONFIG } from "utils/config";
-import { HomePage } from "page-objects/home.page";
-import { ShopPage } from "page-objects/shop.page";
-import { CartPage } from "page-objects/cart.page";
-import { CheckOutPage } from "page-objects/checkOut.page";
-import { expect, test } from "utils/fixtures";
+import { test } from "utils/fixtures";
 
-test("TC_02 : users can buy multiple item", async ({ page, loggedInPage }) => {
-  const homePage = new HomePage(page);
-  const shopPage = new ShopPage(page);
-  const cartPage = new CartPage(page);
-  const checkOutPage = new CheckOutPage(page);
+test("TC_02 : users can buy multiple item", async ({ loggedInPage, homePage, shopPage, cartPage, checkOutPage }) => {
 
   //Go to Shop page
   await homePage.selectMenuItem("Shop");

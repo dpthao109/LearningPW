@@ -1,22 +1,12 @@
-import { expect, test } from "utils/fixtures";
-import { HomePage } from "page-objects/home.page";
-import { ShopPage } from "page-objects/shop.page";
-import { CartPage } from "page-objects/cart.page";
+import { test } from "utils/fixtures";
 
-test.beforeEach("clear all cart", async ({ page, loggedInPage }) => {
+test.beforeEach("clear all cart", async ({ loggedInPage, cartPage, homePage }) => {
   // Clear the cart after each test
-  const cartPage = new CartPage(page);
-  const homePage = new HomePage(page);
-
   await homePage.gotoCart();
   await cartPage.removeAllCart();
 });
 
-test("TC09 - users can update quantity of product in cart", async ({ page }) => {
-  const homePage = new HomePage(page);
-  const shopPage = new ShopPage(page);
-  const cartPage = new CartPage(page);
-
+test("TC09 - users can update quantity of product in cart", async ({ homePage, shopPage, cartPage }) => {
   const productName = "iPad Air 2";
   const productQuantity = 1;
   //

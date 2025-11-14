@@ -1,29 +1,23 @@
 import { test, expect } from "utils/fixtures";
 import { CONFIG } from "utils/config";
-import { HomePage } from "page-objects/home.page";
-import { CartPage } from "page-objects/cart.page";
-import { CheckOutPage } from "page-objects/checkOut.page";
-import { ShopPage } from "page-objects/shop.page";
 
-test.beforeEach("clear all cart", async ({ page, loggedInPage }) => {
+test.beforeEach("clear all cart", async ({ loggedInPage, cartPage, homePage }) => {
   // Clear the cart after each test
-  const cartPage = new CartPage(page);
-  const homePage = new HomePage(page);
-
   await homePage.gotoCart();
   await cartPage.removeAllCart();
 });
 
-test("TC_03 :  users can buy an item using different payment methods", async ({ page }) => {
-  const homePage = new HomePage(page);
-  const shopPage = new ShopPage(page);
-  const cartPage = new CartPage(page);
-  const checkOutPage = new CheckOutPage(page);
-
+test("TC_03 :  users can buy an item using different payment methods", async ({
+  homePage,
+  shopPage,
+  cartPage,
+  checkOutPage,
+}) => {
   const productName = "AirPods";
   const payMent = "Cash on delivery";
   //Go to Shop page
   await homePage.selectMenuItem("Shop");
+  await homePage.switchViewToList();
   //Select an item and add to cart
   await shopPage.addItems(productName, 1);
   await homePage.gotoCart();

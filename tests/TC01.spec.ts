@@ -1,19 +1,12 @@
-import { expect, test } from "utils/fixtures";
+import { test } from "utils/fixtures";
 import { CONFIG } from "utils/config";
-import { HomePage } from "page-objects/home.page";
-import { CartPage } from "page-objects/cart.page";
-import { CheckOutPage } from "page-objects/checkOut.page";
 
-test("TC_01 : users can buy an item successfully", async ({ page, loggedInPage }) => {
-  const homePage = new HomePage(page);
-  const cartPage = new CartPage(page);
-  const checkOutPage = new CheckOutPage(page);
-
+test("TC_01 : users can buy an item successfully", async ({ page, loggedInPage, homePage, cartPage, checkOutPage }) => {
   const productName = "DJI Mavic Pro Camera Drone";
 
   await homePage.selectDepartment("Car Electronics");
-  await homePage.switchView("List");
-  await homePage.verifyViewIs("List");
+  await homePage.switchViewToList();
+  await homePage.verifyViewIsList();
   await homePage.addItemToCart(productName);
   await homePage.gotoCart();
   await cartPage.verifyItemInCart(productName);

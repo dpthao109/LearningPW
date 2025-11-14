@@ -1,27 +1,18 @@
-import { HomePage } from "page-objects/home.page";
-import { ShopPage } from "page-objects/shop.page";
-import { CartPage } from "page-objects/cart.page";
-import { CheckOutPage } from "page-objects/checkOut.page";
 import { CONFIG } from "utils/config";
-import { expect, test } from "utils/fixtures";
+import {  test } from "utils/fixtures";
 
-test.beforeEach("add item", async ({ page, loggedInPage }) => {
+test.beforeEach("add item", async ({ loggedInPage, homePage,shopPage , cartPage  }) => {
   //User is at checkout
-  const homePage = new HomePage(page);
-  const shopPage = new ShopPage(page);
-  const cartPage = new CartPage(page);
-
   const productName = "AirPods";
 
   await homePage.selectMenuItem("Shop");
-  await homePage.switchView("List");
+  await homePage.switchViewToList();
   await shopPage.addItems(productName, 1);
   await homePage.gotoCart();
   await cartPage.checkout();
 });
 
-test("TC07 - Ensure proper error handling when mandatory fields are blank", async ({ page }) => {
-  const checkOutPage = new CheckOutPage(page);
+test("TC07 - Ensure proper error handling when mandatory fields are blank", async ({ checkOutPage }) => {
 
   //Leave mandatory fields (address, payment info) blank
   await checkOutPage.fillShippingDetails({

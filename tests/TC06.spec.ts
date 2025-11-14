@@ -1,17 +1,14 @@
-import { test, Page } from "@playwright/test";
+import { test } from "utils/fixtures";
 import { Common } from "utils/common";
-import { HomePage } from "page-objects/home.page";
-import { ShopPage } from "page-objects/shop.page";
-import { CartPage } from "page-objects/cart.page";
-import { CheckOutPage } from "page-objects/checkOut.page";
 import { CONFIG } from "utils/config";
 
-test("TC06 - users try to buy an item without logging in", async ({ page }) => {
-  const homePage = new HomePage(page);
-  const shopPage = new ShopPage(page);
-  const cartPage = new CartPage(page);
-  const checkOutPage = new CheckOutPage(page);
-
+test("TC06 - users try to buy an item without logging in", async ({
+  page,
+  homePage,
+  shopPage,
+  cartPage,
+  checkOutPage,
+}) => {
   const productName = "AirPods";
   const payMent = "Check payments";
 
@@ -19,7 +16,7 @@ test("TC06 - users try to buy an item without logging in", async ({ page }) => {
 
   //Navigate to 'Shop' or 'Products' section
   await homePage.selectMenuItem("Shop");
-  await homePage.switchView("List");
+  await homePage.switchViewToList();
   //Add a product to cart
   await shopPage.addItems(productName, 1);
   //Click on Cart button

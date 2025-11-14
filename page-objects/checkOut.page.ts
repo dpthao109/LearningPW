@@ -5,7 +5,7 @@ export class CheckOutPage {
   placeOrderButton: Locator = this.page.getByRole("button", {
     name: "PLACE ORDER",
   });
-  firstNameInput: Locator = this.page.getByRole("textbox", {
+  firstNameInput: Locator= this.page.getByRole("textbox", {
     name: "First Name",
   });
   lastNameInput: Locator = this.page.getByRole("textbox", {
@@ -88,20 +88,6 @@ export class CheckOutPage {
     for (const item of items) {
       await this.verifyProductsInOrder(item.name, item.quantity);
     }
-  }
-
-  async getErrorMessages() {
-    await expect(this.page.getByRole("alert")).toBeVisible({ timeout: 5000 });
-    const errorMessages = this.page.getByRole("alert").locator("li");
-    const messages = [];
-    const count = await errorMessages.count();
-    for (let i = 0; i < count; i++) {
-      messages.push(await errorMessages.nth(i).textContent());
-    }
-
-    log("Count : " + count);
-    log("messages : " + messages);
-    return messages;
   }
 
   async verifyErrorMessage(expectedMessage: string) {

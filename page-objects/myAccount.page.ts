@@ -1,4 +1,5 @@
-import { expect, Locator, Page } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
+import { expect } from 'utils/fixtures';
 
 export class MyAccountPage {
   logoutLink: Locator = this.page.getByRole("link", { name: "Log out" });
@@ -12,7 +13,6 @@ export class MyAccountPage {
 
   async verifyOrders(expectedCount: number) {
     const orderRows = this.orderTable.locator("tbody tr");
-    const actualCount = await orderRows.count();
-    await expect(actualCount).toBeGreaterThanOrEqual(expectedCount);
+    await expect(orderRows).toHaveAmountGreaterThanOrEqual(expectedCount);
   }
 }

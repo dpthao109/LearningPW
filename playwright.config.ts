@@ -23,7 +23,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    // baseURL: 'http://localhost:3000',
+    baseURL: process.env.URL ,
     // NOTE: Playwright's `use` options only accept known TestOptions; do not put custom properties here.
     // Access credentials from process.env directly in your tests or expose them via fixtures:
     // const username = process.env.USERNAME;
