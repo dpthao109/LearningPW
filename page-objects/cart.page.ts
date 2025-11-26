@@ -1,5 +1,7 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { log } from "console";
+import { Common } from "utils/common";
+import { GeneralPage } from "./general.page";
 
 export class CartPage {
   checkoutButton: Locator = this.page.getByRole("link", { name: "PROCEED TO CHECKOUT" });
@@ -10,6 +12,7 @@ export class CartPage {
   rowItemLocator = (itemName: string): Locator => this.page.getByRole("row").filter({ hasText: itemName });
 
   constructor(private page: Page) {}
+  generalPage = new GeneralPage(this.page);
 
   async verifyItemInCart(itemName: string, numberOfItems?: number) {
     const itemInCart = this.page
@@ -92,30 +95,13 @@ export class CartPage {
     await expect(subTotalLocator).toHaveText(`$${expected}.00`, { timeout: 10000 });
   }
 
-  async getRowIndex(text: string) {
-    const rows = this.productsTable.getByRole("row");
-    await this.page.waitForLoadState();
-    const rowCount = await rows.count();
-    log("Total Rows :" + rowCount);
-    if (rowCount === 0) {
-      return -1;
-    }
-    for (let i = 0; i < rowCount; i++) {
-      const textContent = await rows.nth(i).getByRole("cell").nth(1).locator(".product-title").textContent();
-      console.log(`Row ${i} Text Content: ${textContent}`);
-      if (textContent === text) {
-        return i;
-      }
-    }
-    return -1;
+  async getProductSubtotal(productName: string) {
+    const headerCellLocator: Locator = this.page
+      .locator(".woocommerce-cart-form__contents thead")
+      .getByRole("row")
+      .getByRole("cell");
+    const rowIndex = await this.generalPage.getRowIndex(this.productsTable, productName);
+    const colIndex = await this.generalPage.getColumnIndex(headerCellLocator, "Subtotal");
+    return this.generalPage.getTableCellValue(this.productsTable, rowIndex, colIndex + 1);
   }
-
-  async getColumnIndex(headername: string) {
-    const header = this.page.locator(".woocommerce-cart-form__contents thead").getByRole("row")
-      .getByRole("columnheader");
-    log("header : " + header);
-    return header;
-  }
-
-  async getTableCellValue() {}
 }
