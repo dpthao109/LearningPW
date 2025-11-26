@@ -2,19 +2,12 @@ import { expect, Locator, Page } from "@playwright/test";
 import { log } from "console";
 
 export class CartPage {
-  checkoutButton: Locator = this.page.getByRole("link", {
-    name: "PROCEED TO CHECKOUT",
-  });
-  removeLink: Locator = this.page.getByRole("link", {
-    name: "Remove",
-  });
+  checkoutButton: Locator = this.page.getByRole("link", { name: "PROCEED TO CHECKOUT" });
+  removeLink: Locator = this.page.getByRole("link", { name: "Remove" });
 
   productsTable: Locator = this.page.locator(".woocommerce-cart-form__contents tbody");
 
-  rowItemLocator = (itemName: string): Locator =>
-    this.page.getByRole("row").filter({
-      hasText: itemName,
-    });
+  rowItemLocator = (itemName: string): Locator => this.page.getByRole("row").filter({ hasText: itemName });
 
   constructor(private page: Page) {}
 
@@ -104,11 +97,9 @@ export class CartPage {
     await this.page.waitForLoadState();
     const rowCount = await rows.count();
     log("Total Rows :" + rowCount);
-
     if (rowCount === 0) {
       return -1;
     }
-
     for (let i = 0; i < rowCount; i++) {
       const textContent = await rows.nth(i).getByRole("cell").nth(1).locator(".product-title").textContent();
       console.log(`Row ${i} Text Content: ${textContent}`);
@@ -116,18 +107,15 @@ export class CartPage {
         return i;
       }
     }
-
     return -1;
   }
 
-  async getcolumnIndex(headername: string) {
-    const header = await this.page.locator(".woocommerce-cart-form__contents thead").getByRole("row").getByRole("columnheader");
+  async getColumnIndex(headername: string) {
+    const header = this.page.locator(".woocommerce-cart-form__contents thead").getByRole("row")
+      .getByRole("columnheader");
     log("header : " + header);
     return header;
   }
 
-  async getTableCellValue()
-  {
-    
-  }
+  async getTableCellValue() {}
 }

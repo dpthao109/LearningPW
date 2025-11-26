@@ -1,30 +1,15 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { log } from "console";
 
 export class CheckOutPage {
-  placeOrderButton: Locator = this.page.getByRole("button", {
-    name: "PLACE ORDER",
-  });
-  firstNameInput: Locator= this.page.getByRole("textbox", {
-    name: "First Name",
-  });
-  lastNameInput: Locator = this.page.getByRole("textbox", {
-    name: "Last Name",
-  });
+  placeOrderButton: Locator = this.page.getByRole("button", { name: "PLACE ORDER" });
+  firstNameInput: Locator = this.page.getByRole("textbox", { name: "First Name" });
+  lastNameInput: Locator = this.page.getByRole("textbox", { name: "Last Name" });
   countryInput: Locator = this.page.locator("select#billing_country");
-  streetInput: Locator = this.page.getByRole("textbox", {
-    name: "Street address *",
-  });
-  cityInput: Locator = this.page.getByRole("textbox", {
-    name: "Town / City *",
-  });
-  zipCodeInput: Locator = this.page.getByRole("textbox", {
-    name: "ZIP code *",
-  });
+  streetInput: Locator = this.page.getByRole("textbox", { name: "Street address *" });
+  cityInput: Locator = this.page.getByRole("textbox", { name: "Town / City *" });
+  zipCodeInput: Locator = this.page.getByRole("textbox", { name: "ZIP code *" });
   phoneInput: Locator = this.page.getByRole("textbox", { name: "Phone *" });
-  emailInput: Locator = this.page.getByRole("textbox", {
-    name: "Email address *",
-  });
+  emailInput: Locator = this.page.getByRole("textbox", { name: "Email address *" });
   orderConfirmation: Locator = this.page.locator(".woocommerce-thankyou-order-received");
   billingAddressSection: Locator = this.page.locator("woocommerce-customer-details");
   constructor(private page: Page) {}

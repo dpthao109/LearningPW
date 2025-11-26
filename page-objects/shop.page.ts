@@ -1,35 +1,30 @@
 import { Locator, Page, expect } from "@playwright/test";
+import { GeneralPage } from "./general.page";
+import { Common } from "utils/common";
 
 export class ShopPage {
   addToCartButton: Locator = this.page.getByRole("button", { name: "Add to cart" });
-
   reviewTab: Locator = this.page.getByRole("link").filter({ hasText: "REVIEWS" });
-
   descriptionTab: Locator = this.page.getByRole("link").filter({ hasText: "DESCRIPTION" });
-
-  reviewText: Locator = this.page.getByRole("textbox", {
-    name: "Your review *",
-  });
-
+  reviewText: Locator = this.page.getByRole("textbox", { name: "Your review *" });
+  filterCombobox: Locator = this.page.locator('select[name="orderby"]');
   submitButton: Locator = this.page.getByRole("button", { name: "Submit" });
+  priceLocator: Locator = this.page.locator(".product .price");
+  itemCardLocator = (itemName: string): Locator => this.page.getByRole("link", { name: itemName, exact: true });
+
+  generalPage = new GeneralPage(this.page);
 
   constructor(private page: Page) {}
 
   async addItems(itemName: string, quantity: number) {
-    const itemCard =  this.page.getByRole("link", {
-      name: itemName,
-      exact: true
-    });
-    await itemCard.click();
+    await this.itemCardLocator(itemName).click();
     if (quantity > 1) {
-      const quantityInput = this.page.getByRole("spinbutton", {
-        name: itemName + " quantity",
-      });
+      const quantityInput = this.page.getByRole("spinbutton", { name: itemName + " quantity" });
       await quantityInput.fill(quantity.toString());
     }
     await expect(this.addToCartButton).toBeVisible();
     await this.addToCartButton.click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState("networkidle");
     await this.page.goBack();
   }
 
@@ -39,55 +34,27 @@ export class ShopPage {
     }
   }
 
-  async waitForLoadingToComplete() {
-    const loadingIndicator = this.page.locator('[class*="product-ajax loading"]');
-    await this.page.waitForLoadState("networkidle");
-    await expect(loadingIndicator).toHaveCount(0);
-  }
-
   async filter(filterBy: string) {
     await this.page.waitForLoadState("networkidle");
-    await this.page.locator('select[name="orderby"]').selectOption(filterBy);
-    await this.waitForLoadingToComplete();
+    await this.filterCombobox.selectOption(filterBy);
+    await this.generalPage.waitForLoadingToComplete();
   }
 
-  async verifyItemsSortedByPriceDescending() {
-    await this.page.waitForLoadState();
-    const prices = await this.page.locator(".product").locator(".price").allTextContents();
-    const priceValues = prices.map((priceText) => {
-      const match = priceText.match(/[\d,.]+/g);
-      if (match) {
-        // Handle cases with sale prices (e.g., "$20.00 $15.00")
-        const lastPrice = match[match.length - 1];
-        return parseFloat(lastPrice.replace(/,/g, ""));
-      }
-      return 0;
-    });
-    const sortedPrices3 = [...priceValues].sort((a, b) => b - a);
-    expect(priceValues).toEqual(sortedPrices3);
-  }
-
-  async verifyItemsSortedByPriceAscending() {
-    const prices = await this.page.locator(".product").locator(".price").allTextContents();
-    const priceValues = prices.map((priceText) => {
-      const match = priceText.match(/[\d,.]+/g);
-      if (match) {
-        // Handle cases with sale prices (e.g., "$20.00 $15.00")
-        const lastPrice = match[match.length - 1];
-        return parseFloat(lastPrice.replace(/,/g, ""));
-      }
-      return 0;
-    });
-    const sortedPrices = [...priceValues].sort((a, b) => a - b);
+  async verifyItemsSortedByPrice(type: "ascending" | "descending") {
+    await expect(this.priceLocator.first()).toBeVisible();
+    const prices = await this.priceLocator.allTextContents();
+    const priceValues = await Common.extractPriceValues(prices);
+    let sortedPrices: number[];
+    if (type === "ascending") {
+      sortedPrices = await Common.sortNumbersAscending(priceValues);
+    } else {
+      sortedPrices = await Common.sortNumbersDescending(priceValues);
+    }
     expect(priceValues).toEqual(sortedPrices);
   }
 
   async openItem(itemName: string) {
-    const itemCard = this.page.getByRole("link", {
-      name: itemName,
-      exact: true,
-    });
-    await itemCard.click();
+    await this.itemCardLocator(itemName).click();
   }
 
   async selectTab(tabItem: string) {
