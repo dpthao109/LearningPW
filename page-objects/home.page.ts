@@ -12,6 +12,8 @@ export class HomePage {
 
   async selectDepartment(nameDepartment: string) {
     await this.allDepartments.click();
+    await expect (this.page.getByRole("link", { name: nameDepartment }).first()).toBeVisible();
+    //await this.page.getByRole("link", { name: nameDepartment }).click()
     await this.page.getByRole("link", { name: nameDepartment }).first().click();
   }
 

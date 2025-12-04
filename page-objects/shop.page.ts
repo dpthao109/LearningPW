@@ -24,7 +24,7 @@ export class ShopPage {
     }
     await expect(this.addToCartButton).toBeVisible();
     await this.addToCartButton.click();
-    await this.page.waitForLoadState("networkidle");
+    await this.generalPage.waitForLoadingToComplete();
     await this.page.goBack();
   }
 
@@ -35,7 +35,7 @@ export class ShopPage {
   }
 
   async filter(filterBy: string) {
-    await this.page.waitForLoadState("networkidle");
+    await this.generalPage.waitForLoadingToComplete();
     await this.filterCombobox.selectOption(filterBy);
     await this.generalPage.waitForLoadingToComplete();
   }

@@ -1,7 +1,13 @@
 import { CONFIG } from "utils/config";
 import { test } from "utils/fixtures";
 
-test("TC_02 : users can buy multiple item", async ({ loggedInPage, homePage, shopPage, cartPage, checkOutPage }) => {
+test.beforeEach("clear all cart", async ({ loggedInPage, cartPage, homePage }) => {
+  // Clear the cart after each test
+  await homePage.gotoCart();
+  await cartPage.removeAllCart();
+});
+
+test("TC_02 : Users can buy multiple item", async ({ loggedInPage, homePage, shopPage, cartPage, checkOutPage }) => {
 
   //Go to Shop page
   await homePage.selectMenuItem("Shop");

@@ -1,0 +1,45 @@
+{
+  "cookies": [
+    {
+      "name": "wordpress_sec_90826ddf297ba60af31c6d23f62dbdc2",
+      "value": "thao.phuong.do%7C1764909335%7C3gwWc1cD2pszSQrtJ9R9LWYqYIEWJdMgNFTd4w3P92p%7Cc85528eddec602629e0692dac0cec0495428dcb3988a2c5e4b003986db2ad065",
+      "domain": "demo.testarchitect.com",
+      "path": "/wp-content/plugins",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "wordpress_sec_90826ddf297ba60af31c6d23f62dbdc2",
+      "value": "thao.phuong.do%7C1764909335%7C3gwWc1cD2pszSQrtJ9R9LWYqYIEWJdMgNFTd4w3P92p%7Cc85528eddec602629e0692dac0cec0495428dcb3988a2c5e4b003986db2ad065",
+      "domain": "demo.testarchitect.com",
+      "path": "/wp-admin",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "wordpress_logged_in_90826ddf297ba60af31c6d23f62dbdc2",
+      "value": "thao.phuong.do%7C1764909335%7C3gwWc1cD2pszSQrtJ9R9LWYqYIEWJdMgNFTd4w3P92p%7Ca2d1155280bb2279d5b240f82c787bbc31cc65fb2224c9aa1bd7570bb97d4b9d",
+      "domain": "demo.testarchitect.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://demo.testarchitect.com",
+      "localStorage": [
+        {
+          "name": "wc_cart_hash_6155aaac04824544d8ddb8fb5150efbe",
+          "value": "20aa8bd0fef9e9f711ffa92c9b7a4d8e"
+        }
+      ]
+    }
+  ]
+}

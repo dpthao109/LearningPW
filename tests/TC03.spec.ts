@@ -1,5 +1,6 @@
 import { test, expect } from "utils/fixtures";
 import { CONFIG } from "utils/config";
+import { verify } from "crypto";
 
 test.beforeEach("clear all cart", async ({ loggedInPage, cartPage, homePage }) => {
   // Clear the cart after each test
@@ -7,7 +8,7 @@ test.beforeEach("clear all cart", async ({ loggedInPage, cartPage, homePage }) =
   await cartPage.removeAllCart();
 });
 
-test("TC_03 :  users can buy an item using different payment methods", async ({
+test("TC_03 :  Users can buy an item using different payment methods", async ({
   homePage,
   shopPage,
   cartPage,
@@ -21,6 +22,7 @@ test("TC_03 :  users can buy an item using different payment methods", async ({
   //Select an item and add to cart
   await shopPage.addItems(productName, 1);
   await homePage.gotoCart();
+  await cartPage.verifyItemInCart(productName, 1);
   //Go to Checkout page
   await cartPage.checkout();
   //Choose a different payment method (Direct bank transfer, Cash on delivery)

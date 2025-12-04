@@ -1,6 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { time } from "console";
-import { TIMEOUT } from "dns";
+import { log } from "console";
 
 export class GeneralPage {
   constructor(private page: Page) {}
@@ -64,4 +63,21 @@ export class GeneralPage {
     const cellText = await cellLocator.textContent();
     return cellText;
   }
+  async toBeVisibleAfterReload(locator: Locator, timeout: number = 10000) {
+    const startTime = Date.now();
+    log("Start Time: " + startTime);
+    while (Date.now() - startTime < timeout) {
+      await this.page.reload();
+      try {
+        await expect(locator).toBeVisible({ timeout: 5000 });
+        return;
+      } catch (error) {
+        // Continue the loop if the locator is not visible
+      }
+    }
+    throw new Error(`Locator was not visible after reloading for ${timeout} ms`);
+  }
+
+  
+
 }

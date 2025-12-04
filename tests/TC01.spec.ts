@@ -1,7 +1,13 @@
 import { test } from "utils/fixtures";
 import { CONFIG } from "utils/config";
 
-test("TC_01 : users can buy an item successfully", async ({ page, loggedInPage, homePage, cartPage, checkOutPage }) => {
+test.beforeEach("clear all cart", async ({ loggedInPage, cartPage, homePage }) => {
+  // Clear the cart after each test
+  await homePage.gotoCart();
+  await cartPage.removeAllCart();
+});
+
+test("TC_01 : Users can buy an item successfully", async ({ page, loggedInPage, homePage, cartPage, checkOutPage }) => {
   const productName = "DJI Mavic Pro Camera Drone";
 
   await homePage.selectDepartment("Car Electronics");

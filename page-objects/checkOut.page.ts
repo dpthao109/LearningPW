@@ -1,4 +1,6 @@
-import { expect, Locator, Page } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
+import { GeneralPage } from "./general.page";
+import { expect } from "utils/fixtures";
 
 export class CheckOutPage {
   placeOrderButton: Locator = this.page.getByRole("button", { name: "PLACE ORDER" });
@@ -10,8 +12,18 @@ export class CheckOutPage {
   zipCodeInput: Locator = this.page.getByRole("textbox", { name: "ZIP code *" });
   phoneInput: Locator = this.page.getByRole("textbox", { name: "Phone *" });
   emailInput: Locator = this.page.getByRole("textbox", { name: "Email address *" });
-  orderConfirmation: Locator = this.page.locator(".woocommerce-thankyou-order-received");
+  private orderConfirmation: Locator = this.page.locator(".woocommerce-notice--success");
+  //locator(".woocommerce-thankyou-order-received");
+  // public get orderConfirmation(): Locator {
+  //   return this._orderConfirmation;
+  // }
+  // public set orderConfirmation(value: Locator) {
+  //   this._orderConfirmation = value;
+  // }
   billingAddressSection: Locator = this.page.locator("woocommerce-customer-details");
+
+  generalPage = new GeneralPage(this.page);
+
   constructor(private page: Page) {}
 
   async fillShippingDetails(details: {
@@ -51,6 +63,7 @@ export class CheckOutPage {
     email: string;
     payMentMethod?: string;
   }) {
+    await this.generalPage.waitForLoadingToComplete();
     await expect(this.orderConfirmation).toBeVisible({ timeout: 10000 });
     await expect(this.page.getByRole("link", { name: orderDetails.itemName })).toBeVisible();
     await expect(this.page.getByText(orderDetails.phone)).toBeVisible();

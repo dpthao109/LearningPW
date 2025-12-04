@@ -7,7 +7,7 @@ test("TC10 - users can post a review", async ({ loggedInPage, homePage, shopPage
   const reviewContent = `test review ${randomNum}`;
   const ratingStar = await Common.randomNumber(1, 5);
 
-  //Go to Shop page
+  //Go to Shop page 
   await homePage.selectMenuItem("Shop");
 
   //Click on a product to view detail

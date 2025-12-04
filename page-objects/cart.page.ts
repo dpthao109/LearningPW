@@ -1,12 +1,12 @@
-import { expect, Locator, Page } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
 import { log } from "console";
 import { Common } from "utils/common";
 import { GeneralPage } from "./general.page";
+import {expect} from "utils/fixtures";
 
 export class CartPage {
   checkoutButton: Locator = this.page.getByRole("link", { name: "PROCEED TO CHECKOUT" });
   removeLink: Locator = this.page.getByRole("link", { name: "Remove" });
-
   productsTable: Locator = this.page.locator(".woocommerce-cart-form__contents tbody");
 
   rowItemLocator = (itemName: string): Locator => this.page.getByRole("row").filter({ hasText: itemName });
@@ -15,12 +15,13 @@ export class CartPage {
   generalPage = new GeneralPage(this.page);
 
   async verifyItemInCart(itemName: string, numberOfItems?: number) {
+    await this.generalPage.waitForLoadingToComplete();
     const itemInCart = this.page
       .getByRole("link", {
         name: itemName,
       })
       .first();
-    await expect(itemInCart).toBeVisible();
+    await expect(itemInCart).toBeVisibleAfterReloadPage();
     if (numberOfItems) {
       const quantityLocator = this.rowItemLocator(itemName).getByRole("spinbutton");
       await expect(quantityLocator).toHaveValue(numberOfItems.toString());
@@ -84,24 +85,46 @@ export class CartPage {
     }
   }
 
+  /**
+   * Retrieve the numeric price for a product row identified by its visible name.
+   *
+   * This asynchronous method locates the row for the provided `itemName`, selects
+   * the nested element matching the ".product-price" selector, reads its text
+   * content, strips any characters except digits, decimal points, and minus
+   * signs, and parses the result as a floating-point number.
+   *
+   * @param itemName - The visible name of the product whose price should be read.
+   * @returns A promise that resolves to the product price as a number. If the price
+   * text is missing or cannot be parsed, the result will be NaN.
+   */
   async getPrice(itemName: string): Promise<number> {
     const priceText = await this.rowItemLocator(itemName).locator(".product-price").textContent();
     return parseFloat((priceText ?? "").replace(/[^\d.-]/g, ""));
   }
 
-  async verifySubTotal(itemName: string, expectedTotal: number) {
-    const expected = expectedTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  async verifySubTotal(itemName: string, subTotal: number) {
+    const expected = (await Common.formatNumber(subTotal)).toString();
     const subTotalLocator = this.rowItemLocator(itemName).locator(".product-subtotal");
     await expect(subTotalLocator).toHaveText(`$${expected}.00`, { timeout: 10000 });
   }
 
-  async getProductSubtotal(productName: string) {
+  async getProductDetails(productName: string, columnName:string) {
     const headerCellLocator: Locator = this.page
       .locator(".woocommerce-cart-form__contents thead")
       .getByRole("row")
       .getByRole("cell");
     const rowIndex = await this.generalPage.getRowIndex(this.productsTable, productName);
-    const colIndex = await this.generalPage.getColumnIndex(headerCellLocator, "Subtotal");
-    return this.generalPage.getTableCellValue(this.productsTable, rowIndex, colIndex + 1);
+    const colIndex = await this.generalPage.getColumnIndex(headerCellLocator, columnName) + 1;
+    //return this.generalPage.getTableCellValue(this.productsTable, rowIndex, colIndex + 1);
+
+    if (columnName==="Quantity") {
+      const cellLocator = this.productsTable.getByRole("row").nth(rowIndex).getByRole("cell").nth(colIndex).getByRole("spinbutton");
+      const cellText = await cellLocator.getAttribute("value");
+      return cellText;
+    } else {
+      return this.generalPage.getTableCellValue(this.productsTable, rowIndex, colIndex);
+    }
   }
+
+   
 }

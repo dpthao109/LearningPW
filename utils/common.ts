@@ -1,8 +1,6 @@
 import { Page, expect, Locator } from "@playwright/test";
-import { CONFIG } from "./config";
 
 export class Common {
-  page: any;
   static page: any;
   static async navigateToPage(page: Page) {
     await page.goto("");
@@ -53,4 +51,30 @@ export class Common {
   static async sortNumbersDescending(numbers: number[]): Promise<number[]> {
     return [...numbers].sort((a, b) => b - a);
   }
+
+  /**
+   * Formats a numeric value by inserting commas as thousands separators and returns the result as a Promise.
+   *
+   * Converts the input number to a string and inserts commas every three digits to the left of the decimal point
+   * (for example, 1234567 -> "1,234,567"). Decimal fraction and sign are preserved (for example, -1234.56 -> "-1,234.56").
+   * The function is asynchronous but returns a resolved Promise<string> and performs no I/O.
+   *
+   * @param expectedTotal - The numeric value to format.
+   * @returns A promise that resolves to the formatted string with commas as thousands separators.
+   *
+   * @example
+   * const formatted = await Common.formatPrice(1234567); // "1,234,567"
+   *
+   * @example
+   * const formatted = await Common.formatPrice(12345.67); // "12,345.67"
+   *
+   * @remarks
+   * - Implementation detail: uses Number.prototype.toString() and a regular expression to insert commas.
+   * - Special numeric values (NaN, Infinity, -Infinity) are converted via toString() (e.g., "NaN", "Infinity").
+   */
+  static async formatNumber(number: number) {
+    return  number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+  }
+
+
 }

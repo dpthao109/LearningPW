@@ -7,6 +7,8 @@ import type { Locator } from "@playwright/test";
 import { CartPage } from "page-objects/cart.page";
 import { CheckOutPage } from "page-objects/checkOut.page";
 import { ShopPage } from "page-objects/shop.page";
+import fs from "fs";
+import path from "path";
 
 export const test = base.extend<{
   loggedInPage: void;
@@ -17,6 +19,19 @@ export const test = base.extend<{
 
 }>({
   loggedInPage: async ({ page }, use) => {
+    // If a storage state file exists (created by the save-auth script),
+    // Playwright will automatically load cookies/localStorage from config.
+    // We still need to navigate to the page to initialize the app.
+    const storagePath = process.env.STORAGE_STATE_PATH || path.join(process.cwd(), "env", "storageState.json");
+    if (fs.existsSync(storagePath)) {
+      // Storage state is already loaded by Playwright from config.
+      // Just navigate to the app and close cookie notice.
+      await Common.navigateToPage(page);
+      await use();
+      return;
+    }
+
+    // Fallback: if no storage state, perform login as before
     const loginPage = new LoginPage(page);
     await Common.navigateToPage(page);
     await loginPage.logIn(process.env.TEST_USERNAME!, process.env.TEST_PASSWORD!);
@@ -129,4 +144,34 @@ export const expect = baseExpect.extend({
 
     return { pass, message };
   },
+
+  async toBeVisibleAfterReloadPage(locator: Locator, options?: { timeout?: number }) {
+    const assertionName = "toBeVisibleAfterReloadPage";
+    const timeout = options?.timeout ?? 5000;
+    let pass = false;
+    try {
+      await locator.page().reload();
+      const expectation = this.isNot ? baseExpect(locator).not : baseExpect(locator);
+      await expectation.toBeVisible({ timeout });
+      pass = true;
+    } catch (e: any) {
+      pass = false;
+    }
+    if (this.isNot) {
+      pass = !pass;
+    }
+    const message = pass
+      ? () =>
+          this.utils.matcherHint(assertionName, undefined, undefined, { isNot: this.isNot }) +
+          "\n\n" +
+          `Locator: ${locator}\n` +
+          `Expected: not to be visible after reload\n`
+      : () =>
+          this.utils.matcherHint(assertionName, undefined, undefined, { isNot: this.isNot }) +
+          "\n\n" +
+          `Locator: ${locator}\n` +
+          `Expected: to be visible after reload\n`;
+    return { message, pass, name: assertionName, expected: "to be visible after reload" };
+  }
+  
 });
