@@ -2,7 +2,7 @@
   "cookies": [
     {
       "name": "wordpress_sec_90826ddf297ba60af31c6d23f62dbdc2",
-      "value": "thao.phuong.do%7C1764909335%7C3gwWc1cD2pszSQrtJ9R9LWYqYIEWJdMgNFTd4w3P92p%7Cc85528eddec602629e0692dac0cec0495428dcb3988a2c5e4b003986db2ad065",
+      "value": "demo.testarchitect3%7C1765093162%7Cnju3pBVSE7EP7zDqjDR5SAXncdKoYbLoxnct0dqsvHP%7Cd1f1bc3cba8c0362a1d0fb326bc1fe70f4350415824fce284e2b6f59273c36cd",
       "domain": "demo.testarchitect.com",
       "path": "/wp-content/plugins",
       "expires": -1,
@@ -12,7 +12,7 @@
     },
     {
       "name": "wordpress_sec_90826ddf297ba60af31c6d23f62dbdc2",
-      "value": "thao.phuong.do%7C1764909335%7C3gwWc1cD2pszSQrtJ9R9LWYqYIEWJdMgNFTd4w3P92p%7Cc85528eddec602629e0692dac0cec0495428dcb3988a2c5e4b003986db2ad065",
+      "value": "demo.testarchitect3%7C1765093162%7Cnju3pBVSE7EP7zDqjDR5SAXncdKoYbLoxnct0dqsvHP%7Cd1f1bc3cba8c0362a1d0fb326bc1fe70f4350415824fce284e2b6f59273c36cd",
       "domain": "demo.testarchitect.com",
       "path": "/wp-admin",
       "expires": -1,
@@ -22,7 +22,7 @@
     },
     {
       "name": "wordpress_logged_in_90826ddf297ba60af31c6d23f62dbdc2",
-      "value": "thao.phuong.do%7C1764909335%7C3gwWc1cD2pszSQrtJ9R9LWYqYIEWJdMgNFTd4w3P92p%7Ca2d1155280bb2279d5b240f82c787bbc31cc65fb2224c9aa1bd7570bb97d4b9d",
+      "value": "demo.testarchitect3%7C1765093162%7Cnju3pBVSE7EP7zDqjDR5SAXncdKoYbLoxnct0dqsvHP%7C2db1a8343d2e9713dade5bc1b19801ad91e496046f6b5f7042fba67cdba98ea8",
       "domain": "demo.testarchitect.com",
       "path": "/",
       "expires": -1,

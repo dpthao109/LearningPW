@@ -1,6 +1,6 @@
 import { test } from "utils/fixtures";
 
-test("TC04 - users can sort items by price", async ({ loggedInPage, homePage, shopPage }) => {
+test("TC_04 - users can sort items by price", async ({ loggedInPage, homePage, shopPage }) => {
 
   //Go to Shop page
   await homePage.selectMenuItem("Shop");

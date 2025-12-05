@@ -1,0 +1,75 @@
+{
+  "cookies": [
+    {
+      "name": "wordpress_sec_90826ddf297ba60af31c6d23f62dbdc2",
+      "value": "demo.testarchitect4%7C1765093172%7Ch0bAmnn8m23CKFc89AQfniIqiauuqp4tMCfIEtAe6JR%7Cd76939f1403fdf4a6ee9de68a2963b783a78437553850f7b2c3a20e97acda154",
+      "domain": "demo.testarchitect.com",
+      "path": "/wp-content/plugins",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "wordpress_sec_90826ddf297ba60af31c6d23f62dbdc2",
+      "value": "demo.testarchitect4%7C1765093172%7Ch0bAmnn8m23CKFc89AQfniIqiauuqp4tMCfIEtAe6JR%7Cd76939f1403fdf4a6ee9de68a2963b783a78437553850f7b2c3a20e97acda154",
+      "domain": "demo.testarchitect.com",
+      "path": "/wp-admin",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "wordpress_logged_in_90826ddf297ba60af31c6d23f62dbdc2",
+      "value": "demo.testarchitect4%7C1765093172%7Ch0bAmnn8m23CKFc89AQfniIqiauuqp4tMCfIEtAe6JR%7Ca65d016c59af821894641d0def1b61186dc1b25ba922661f0c0038ae6b01fe73",
+      "domain": "demo.testarchitect.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "woocommerce_items_in_cart",
+      "value": "1",
+      "domain": "demo.testarchitect.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "woocommerce_cart_hash",
+      "value": "447d83deb7f9e82560efa5330dba62eb",
+      "domain": "demo.testarchitect.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "wp_woocommerce_session_90826ddf297ba60af31c6d23f62dbdc2",
+      "value": "7292%7C%7C1765093172%7C%7C1765089572%7C%7C3a8cc55135a900fbd1fbb02ac37f3c23",
+      "domain": "demo.testarchitect.com",
+      "path": "/",
+      "expires": 1765093172.573566,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://demo.testarchitect.com",
+      "localStorage": [
+        {
+          "name": "wc_cart_hash_6155aaac04824544d8ddb8fb5150efbe",
+          "value": "447d83deb7f9e82560efa5330dba62eb"
+        }
+      ]
+    }
+  ]
+}

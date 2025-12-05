@@ -1,5 +1,4 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { Common } from "utils/common";
 
 export class HomePage {
   allDepartments: Locator = this.page.getByText("All Departments");

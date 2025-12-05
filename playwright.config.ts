@@ -9,7 +9,6 @@ dotenv.config();
 export default defineConfig({
   timeout: 300_000,
   testDir: "./tests",
-  
 
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -23,7 +22,6 @@ export default defineConfig({
   reporter: "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-  
     /* Base URL to use in actions like `await page.goto('')`. */
     baseURL: process.env.URL,
     headless: false,
@@ -34,25 +32,26 @@ export default defineConfig({
     // const account = process.env.ACCOUNT;
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "on",
-    //video: 'on-first-retry',
-    //screenshot: 'only-on-failure',
-
-    actionTimeout: 30_000,
-    // Use a saved authentication state so multiple workers can reuse one account.
-    // Set STORAGE_STATE_PATH env var to override the default path.
-    storageState: process.env.STORAGE_STATE_PATH || "env/storageState.json",
+    // Use a single chromium project and pick a random storageState per worker in fixtures.
   },
 
-  /* Configure projects for major browsers */
   projects: [
     {
       name: "chromium",
       use: {
         ...devices["Desktop Chrome"],
-        //viewport: { width: 1920, height: 1280 },
+        viewport: { width: 1920, height: 1280 },
       },
     },
+    // {
+    //   name: "chromium-user4",
+    //   use: {
+    //     ...devices["Desktop Chrome"],
+    //     storageState: "env/storageState-4.json",
+    //   },
+    // },
+
+    /* Test against Firefox. */
 
     // {
     //   name: 'firefox',

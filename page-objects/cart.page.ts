@@ -1,5 +1,4 @@
 import { Locator, Page } from "@playwright/test";
-import { log } from "console";
 import { Common } from "utils/common";
 import { GeneralPage } from "./general.page";
 import {expect} from "utils/fixtures";

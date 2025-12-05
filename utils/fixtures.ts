@@ -14,24 +14,54 @@ export const test = base.extend<{
   loggedInPage: void;
   homePage: HomePage;
   cartPage: CartPage;
-  checkOutPage : CheckOutPage;
-  shopPage :ShopPage;
-
+  checkOutPage: CheckOutPage;
+  shopPage: ShopPage;
 }>({
-  loggedInPage: async ({ page }, use) => {
-    // If a storage state file exists (created by the save-auth script),
-    // Playwright will automatically load cookies/localStorage from config.
-    // We still need to navigate to the page to initialize the app.
-    const storagePath = process.env.STORAGE_STATE_PATH || path.join(process.cwd(), "env", "storageState.json");
-    if (fs.existsSync(storagePath)) {
-      // Storage state is already loaded by Playwright from config.
-      // Just navigate to the app and close cookie notice.
-      await Common.navigateToPage(page);
-      await use();
+  // Override context so each worker can load a worker-specific storageState file
+  context: async ({ browser }, use, workerInfo) => {
+    // Pick a random storageState file from env/storageState-*.json for this worker.
+    const idx = typeof workerInfo?.workerIndex === "number" ? workerInfo.workerIndex : 0;
+    const storageDir = path.join(process.cwd(), "env");
+    const candidates = fs.existsSync(storageDir)
+      ? fs.readdirSync(storageDir).filter((f) => f.startsWith("storageState") && f.endsWith(".json"))
+      : [];
+
+    if (candidates.length > 0) {
+      // Choose randomly (per worker) so different workers likely get different accounts.
+      const chosen = candidates[Math.floor(Math.random() * candidates.length)];
+      const storagePath = path.join(storageDir, chosen);
+      console.log(`Worker ${idx} -> randomly selected storage file: ${storagePath}`);
+      const context = await browser.newContext({ storageState: storagePath });
+      await use(context);
+      await context.close();
       return;
     }
 
-    // Fallback: if no storage state, perform login as before
+    // Fallback to a fresh context if no storage files present
+    const context = await browser.newContext();
+    await use(context);
+    await context.close();
+  },
+  loggedInPage: async ({ page }, use, workerInfo) => {
+    // If there are per-worker storageState files (storageState-1.json..), pick one
+    const storageDir = path.join(process.cwd(), "env");
+    const files = fs.existsSync(storageDir)
+      ? fs.readdirSync(storageDir).filter((f) => f.startsWith("storageState") && f.endsWith(".json"))
+      : [];
+
+    if (files.length > 0) {
+      const idx = typeof workerInfo?.workerIndex === "number" ? workerInfo.workerIndex : 0;
+      const fileToUse = files[idx % files.length];
+      const storagePath = path.join(storageDir, fileToUse);
+      console.log(`loggedInPage: worker ${idx} will use storage file: ${storagePath}`);
+      if (fs.existsSync(storagePath)) {
+        await Common.navigateToPage(page);
+        await use();
+        return;
+      }
+    }
+
+    // Fallback: if no storage state files, perform login as before
     const loginPage = new LoginPage(page);
     await Common.navigateToPage(page);
     await loginPage.logIn(process.env.TEST_USERNAME!, process.env.TEST_PASSWORD!);
@@ -42,22 +72,20 @@ export const test = base.extend<{
     await use(new HomePage(page));
   },
 
-  cartPage: async ({page},use) => {
-    await use (new CartPage(page));
-  },
-  
-  checkOutPage: async({page},use)=> {
-    await use (new CheckOutPage(page));
+  cartPage: async ({ page }, use) => {
+    await use(new CartPage(page));
   },
 
-  shopPage : async ({page}, use) =>{
+  checkOutPage: async ({ page }, use) => {
+    await use(new CheckOutPage(page));
+  },
+
+  shopPage: async ({ page }, use) => {
     await use(new ShopPage(page));
-  }
-
+  },
 });
 
 export const expect = baseExpect.extend({
-
   async toHaveAmount(locator: Locator, expected: number, options?: { timeout?: number }) {
     const assertionName = "toHaveAmount";
     let pass: boolean;
@@ -172,6 +200,5 @@ export const expect = baseExpect.extend({
           `Locator: ${locator}\n` +
           `Expected: to be visible after reload\n`;
     return { message, pass, name: assertionName, expected: "to be visible after reload" };
-  }
-  
+  },
 });

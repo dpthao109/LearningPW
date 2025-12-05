@@ -12,7 +12,7 @@ test.beforeEach("add item", async ({ loggedInPage, homePage,shopPage , cartPage 
   await cartPage.checkout();
 });
 
-test("TC07 - Ensure proper error handling when mandatory fields are blank", async ({ checkOutPage }) => {
+test("TC_07 - Ensure proper error handling when mandatory fields are blank", async ({ checkOutPage }) => {
 
   //Leave mandatory fields (address, payment info) blank
   await checkOutPage.fillShippingDetails({

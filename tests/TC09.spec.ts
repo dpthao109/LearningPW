@@ -6,7 +6,7 @@ test.beforeEach("clear all cart", async ({ loggedInPage, cartPage, homePage }) =
   await cartPage.removeAllCart();
 });
 
-test("TC09 - Users can update quantity of product in cart", async ({ homePage, shopPage, cartPage }) => {
+test("TC_09 - Users can update quantity of product in cart", async ({ homePage, shopPage, cartPage }) => {
   const productName = "iPad Air 2";
   const productQuantity = 1;
   //

@@ -12,7 +12,7 @@ test.beforeEach("add items to cart", async ({ loggedInPage, homePage, shopPage, 
   await shopPage.addItems(productName, 2);
 });
 
-test("TC08- -users can clear the cart", async ({ homePage, cartPage }) => {
+test("TC_08- -users can clear the cart", async ({ homePage, cartPage }) => {
   const productName = "AirPods";
   //Go to Shopping cart page
   await homePage.gotoCart();

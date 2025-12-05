@@ -1,7 +1,7 @@
 import { test } from "utils/fixtures";
 import { Common } from "utils/common";
 
-test("TC10 - users can post a review", async ({ loggedInPage, homePage, shopPage }) => {
+test("TC_10 - users can post a review", async ({ loggedInPage, homePage, shopPage }) => {
   const productName = "AirPods";
   const randomNum = await Common.randomNumber(1, 1000);
   const reviewContent = `test review ${randomNum}`;

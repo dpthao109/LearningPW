@@ -2,7 +2,7 @@ import { test } from "utils/fixtures";
 import { Common } from "utils/common";
 import { CONFIG } from "utils/config";
 
-test("TC06 - users try to buy an item without logging in", async ({
+test("TC_06 - users try to buy an item without logging in", async ({
   page,
   homePage,
   shopPage,
